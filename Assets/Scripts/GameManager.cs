@@ -4,14 +4,29 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //TODO: crear
-    void Start()
+    public static GameManager Instance;
+
+    [SerializeField] int time = 30;
+    public int difficulty = 1;
+
+    private void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+    private void Start() {
+        StartCoroutine(CountDownRoutine());
     }
 
-    void Update()
-    {
+    IEnumerator CountDownRoutine() {
         
+        while(time>0) {
+            yield return new WaitForSeconds(1);
+            time--;
+        }
+
+        //TODO Game Over - falta condifgurar-
     }
 }
