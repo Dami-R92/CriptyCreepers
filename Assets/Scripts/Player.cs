@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] float playerHealt = 10;
 
+    bool powerShotEnabled;
+    [SerializeField] bool invulnerable;
+
     void Start()
     {
         
@@ -53,11 +56,13 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButton(0) && gunLoaded){
             gunLoaded = false;
             float angle = Mathf.Atan2(facingDirection.y, facingDirection.x)*Mathf.Rad2Deg;
-
             //! Esto da la rotacion a la bala
             Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-            Instantiate(bulletprefab, transform.position, targetRotation);
+            Transform bulletClone = Instantiate(bulletprefab, transform.position, targetRotation);
+            if (powerShotEnabled) {
+                bulletClone.GetComponent<Bullet>().powerShot = true;
+            }
 
             StartCoroutine(ReloadTime());
         }
@@ -71,7 +76,15 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
+        if(invulnerable) return;
         playerHealt--;
+        invulnerable = true;
+        StartCoroutine(MakeVulnerableAgain());
+        
+    }
+    IEnumerator MakeVulnerableAgain() {
+        yield return new WaitForSeconds(3);
+        invulnerable = false;
     }
 
     void PlayerStatus() {
@@ -79,6 +92,22 @@ public class Player : MonoBehaviour
             //TODO: Game Over
             Destroy(gameObject);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("PowerUp")) {
+            switch(collision.GetComponent<PowerUp>().powerUpType){
+                case PowerUp.PowerUpType.FireRateIncrease:
+                fireRate++;
+                break;
+                case PowerUp.PowerUpType.PowerShot:
+                powerShotEnabled = true;
+                break;
+
+            }
+            Destroy(collision.gameObject,0.1f);
+        }
+        
     }
 
 }
