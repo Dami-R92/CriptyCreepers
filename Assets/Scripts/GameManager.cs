@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,12 +9,14 @@ public class GameManager : MonoBehaviour
 
     public int time = 30;
     public int difficulty = 1;
+    public bool gameOver = false;
     [SerializeField] int score;
 
     public int Score {
         get => score;
         set {
             score = value;
+            UIManager.Instance.UpdateUIScore(score);
             if (score% 1000 ==0)
             difficulty++;
         }
@@ -38,7 +41,11 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1);
             time--;
         }
+        gameOver = true;
+        UIManager.Instance.ShowGameOverScreen();
+    }
 
-        //TODO Game Over - falta condifgurar-
+    public void PlayAgain() {
+        SceneManager.LoadScene("Game");
     }
 }

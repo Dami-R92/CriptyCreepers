@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     float h;
     float v;
     Vector3 moveDirection;
-    [SerializeField] float speed = 3;
+    public float speed = 3;
     [SerializeField] Transform aim;
     [SerializeField] Camera camera;
 
@@ -19,10 +19,19 @@ public class Player : MonoBehaviour
 
     [SerializeField] float fireRate = 1;
 
-    [SerializeField] float playerHealt = 10;
+    [SerializeField] int playerHealt = 10;
 
     bool powerShotEnabled;
     [SerializeField] bool invulnerable;
+    [SerializeField] float invulnerableTime = 3;
+
+    public int Healt {
+        get => playerHealt;
+        set {
+            playerHealt = value;
+            UIManager.Instance.UpdateUIHealth(playerHealt);
+        }
+    }
 
     void Start()
     {
@@ -77,20 +86,20 @@ public class Player : MonoBehaviour
     public void TakeDamage()
     {
         if(invulnerable) return;
-        playerHealt--;
+        Healt--;
         invulnerable = true;
         StartCoroutine(MakeVulnerableAgain());
         
     }
     IEnumerator MakeVulnerableAgain() {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(invulnerableTime);
         invulnerable = false;
     }
 
     void PlayerStatus() {
         if(playerHealt <=0) {
-            //TODO: Game Over
-            Destroy(gameObject);
+            GameManager.Instance.gameOver = true;
+            UIManager.Instance.ShowGameOverScreen();
         }
     }
 
