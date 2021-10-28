@@ -6,11 +6,9 @@ public class Enemy : MonoBehaviour
 {
     Transform player;
 
-    [SerializeField]
-    int healt = 1;
+    [SerializeField] int healt = 1, scorePoint = 100;
 
-    [SerializeField]
-    float speed = 1;
+    [SerializeField] float speed = 1;
 
     private void Start()
     {
@@ -24,6 +22,7 @@ public class Enemy : MonoBehaviour
     {
         EnemyIA();
         if (healt <=0) {
+            GameManager.Instance.Score +=scorePoint;
             Destroy(gameObject);
         }
     }

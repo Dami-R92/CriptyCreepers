@@ -8,6 +8,18 @@ public class GameManager : MonoBehaviour
 
     public int time = 30;
     public int difficulty = 1;
+    [SerializeField] int score;
+
+    public int Score {
+        get => score;
+        set {
+            score = value;
+            if (score% 1000 ==0)
+            difficulty++;
+        }
+    }
+
+
 
     private void Awake()
     {
