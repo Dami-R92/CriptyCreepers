@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -20,10 +21,12 @@ public class Player : MonoBehaviour
     [SerializeField] float fireRate = 1;
 
     [SerializeField] int playerHealt = 10;
-
     bool powerShotEnabled;
     [SerializeField] bool invulnerable;
     [SerializeField] float invulnerableTime = 3;
+
+    [SerializeField] Animator anim;
+    [SerializeField] SpriteRenderer spriteRenderer;
 
     public int Healt {
         get => playerHealt;
@@ -45,6 +48,7 @@ public class Player : MonoBehaviour
         AimController();
         BulletController();
         PlayerStatus();
+        PlayerAnimationController();
 
     }
 
@@ -75,6 +79,20 @@ public class Player : MonoBehaviour
 
             StartCoroutine(ReloadTime());
         }
+
+    }
+
+    void PlayerAnimationController() {
+        anim.SetFloat("Speed",moveDirection.magnitude);
+
+        if(aim.position.x > transform.position.x) {
+            spriteRenderer.flipX = false;
+
+        }else if (aim.position.x< transform.position.x) {
+            spriteRenderer.flipX = true;
+
+        }
+
     }
 
     IEnumerator ReloadTime(){
