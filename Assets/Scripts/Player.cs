@@ -86,10 +86,10 @@ public class Player : MonoBehaviour
         anim.SetFloat("Speed",moveDirection.magnitude);
 
         if(aim.position.x > transform.position.x) {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = true;
 
         }else if (aim.position.x< transform.position.x) {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false;
 
         }
 
