@@ -229,6 +229,7 @@ MonoBehaviour:
   healt: 5
   scorePoint: 100
   speed: 1
+  impactClip: {fileID: 8300000, guid: de9e33dbe81a91342af9c9c7fdbd5680, type: 3}
 --- !u!50 &6503651439111567044
 Rigidbody2D:
   serializedVersion: 4

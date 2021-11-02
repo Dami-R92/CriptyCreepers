@@ -151,6 +151,7 @@ MonoBehaviour:
   healt: 3
   scorePoint: 100
   speed: 1
+  impactClip: {fileID: 8300000, guid: de9e33dbe81a91342af9c9c7fdbd5680, type: 3}
 --- !u!58 &294253375
 CircleCollider2D:
   m_ObjectHideFlags: 0
