@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] Animator anim;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField]float blinkRate = 1;
+    CameraController camController;
+
 
     public int Healt {
         get => playerHealt;
@@ -38,6 +41,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        camController = FindObjectOfType<CameraController>();
         
     }
 
@@ -106,12 +110,25 @@ public class Player : MonoBehaviour
         if(invulnerable) return;
         Healt--;
         invulnerable = true;
+        camController.Shake();
         StartCoroutine(MakeVulnerableAgain());
         
     }
     IEnumerator MakeVulnerableAgain() {
+        StartCoroutine(BlinkRoutine());
         yield return new WaitForSeconds(invulnerableTime);
         invulnerable = false;
+    }
+
+    IEnumerator BlinkRoutine() {
+        int t = 10;
+        while(t>0) {
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(t*blinkRate);
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(t*blinkRate);
+            t--;
+        }
     }
 
     void PlayerStatus() {
